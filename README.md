@@ -19,3 +19,6 @@ Long Term Goals
 - Goal setting
 - Flocking behavior
 - Teamwork between Agents
+- Forging for food & eating
+- Aging for agents
+- Death
