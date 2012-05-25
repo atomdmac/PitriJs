@@ -5,21 +5,24 @@ function Agent(config) {
 		body: new PointMassModel()
 	}
 	
-	// Merge defaults with given config.
-	this.state = $.extend({}, defaults, config);
+	// Internal reference to self.
+	var me = this;
 	
-	// Public Interface
-	this.tick = tick;
+	// Merge defaults with given config.
+	me.state = $.extend({}, defaults, config);
 	
 	// Do initialization here.
-	function init() {
+	me.init = function() {
 		// TODO
 	}
 	
 	// Run the next iteration of the simulation.
-	function tick() {
+	me.tick = function() {
 		// TODO
 	}
+	
+	// Initialize.
+	me.init();
 }
 
 function PointMassModel(config) {
@@ -32,48 +35,54 @@ function PointMassModel(config) {
 		mass: 1
 	}
 	
-	// Merge defaults with given.
-	this.state = $.extend({}, defaults, config);
+	// Internal reference to self.
+	var me = this;
 	
-	// Public Interface.
-	this.move = move;
+	// Merge defaults with given.
+	me.state = $.extend({}, defaults, config);
 	
 	// Do initialization here.
-	function init() {
+	me.init = function() {
 		// TODO
 	}
 	
 	// Modify the point mass's properties according to the given steering 
 		// force.
-	function move(steer) {
+	me.move = function(steer) {
 		// TODO
 	}
 	
-	// Returns a copy of the state object.
-	function getState() {
-		return $.extend({}, state);
-	}
+	// Initialize.
+	me.init();
 }
 
 function Wanderer(config) {
 	// Defaults
 	var defaults = {
-		target: getTarget()
+		// Blank for now!
 	}
 	
-	// Merge defaults with config to form state.
-	this.state = $.extend({}, defaults, config);
+	// Internal reference to self.
+	var me = this;
 	
-	// Public Interface.
-	this.tick = tick;
+	// Merge defaults with config to form state.
+	me.state = $.extend({}, defaults, config);
+	
+	// Do initialization here.
+	me.init = function() {
+		// TODO
+	}
 	
 	// Decides where to move to next based on the current target position and other environmental factors.
-	function tick(steer) {
+	me.tick = function(steer) {
 		// TODO
 	}
 	
 	// Return a random target to move toward.
-	function getTarget() {
+	me.getTarget = function() {
 		// TODO
 	}
+	
+	// Initialize.
+	me.init();
 }
