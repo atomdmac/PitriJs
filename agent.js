@@ -1,4 +1,5 @@
-function Agent(config) {
+function Agent(config) 
+{
 	var defaults = {
 		name: "Agent" + Math.random(),
 		brain: new Wanderer(),
@@ -12,12 +13,14 @@ function Agent(config) {
 	me.state = $.extend({}, defaults, config);
 	
 	// Do initialization here.
-	me.init = function() {
+	me.init = function() 
+	{
 		// TODO
 	}
 	
 	// Run the next iteration of the simulation.
-	me.tick = function() {
+	me.tick = function() 
+	{
 		// TODO: How will the brain and the body share state information?
 		// me.state.brain.think();
 		// me.state.body.move();
@@ -27,7 +30,8 @@ function Agent(config) {
 	me.init();
 }
 
-function PointMassModel(config) {
+function PointMassModel(config) 
+{
 	var defaults = {
 		maxSpeed: 10,
 		maxForce: 1,
@@ -44,13 +48,15 @@ function PointMassModel(config) {
 	me.state = $.extend({}, defaults, config);
 	
 	// Do initialization here.
-	me.init = function() {
+	me.init = function() 
+	{
 		// TODO
 	}
 	
 	// Modify the point mass's properties according to the given steering 
 		// force.
-	me.move = function(steer) {
+	me.move = function(steer) 
+	{
 		// TODO
 	}
 	
@@ -58,7 +64,8 @@ function PointMassModel(config) {
 	me.init();
 }
 
-function Wanderer(config) {
+function Wanderer(config) 
+{
 	// Defaults
 	var defaults = {
 		// Blank for now!
@@ -71,26 +78,23 @@ function Wanderer(config) {
 	me.state = $.extend({}, defaults, config);
 	
 	// Do initialization here.
-	me.init = function() {
+	me.init = function() 
+	{
 		// Acquire a random target.
 		me.state.target = me.getTarget();
 	}
 	
 	// Decides where to move to next based on the current target position and other environmental factors.
-	me.think = function() {
+	me.think = function() 
+	{
 		// TODO
 	}
 	
 	// Return a random target to move toward.
-	me.getNewTarget = function() {
-		var minx = 0;
-		var maxx = 400;
-		
-		var miny = 0;
-		var maxy = 400
-		
-		var x = Math.randInt(minx,maxx);
-		var y = Math.randInt(miny, maxy);
+	me.getNewTarget = function() 
+	{	
+		var x = Math.randInt(0, 400);
+		var y = Math.randInt(0, 400);
 		
 		return new Vector(x,y);
 	}
