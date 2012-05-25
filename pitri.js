@@ -2,7 +2,8 @@
  * Pitri Life Sim
  * Main Script
  */
-function Pitri(config) {
+function Pitri(config) 
+{
 	var defaults = {
 		maxAgents: 1,
 		fps: 30,
@@ -29,7 +30,8 @@ function Pitri(config) {
 	// -Empty for now.-
 	
 	// Do initialization here.
-	me.init = function() {
+	me.init = function() 
+	{
 		// Auto-populate!
 		for(var i=0; i<me.config.maxAgents; i++){
 			me.createAgent();
@@ -40,7 +42,8 @@ function Pitri(config) {
 	};
 	
 	// Start the sim.
-	me.start = function() {
+	me.start = function() 
+	{
 		if(this.state.interval != null) return;
 		
 		// Create main loop at given framerate.
@@ -50,22 +53,26 @@ function Pitri(config) {
 	}
 	
 	// Stop the sim.
-	me.stop = function() {
+	me.stop = function() 
+	{
 		clearInterval(this.state.interval);
 		me.state.interval = null;
 	}
 	
 	// Run next iteration of the simulation.
-	me.tick = function() {
+	me.tick = function() 
+	{
 		for(agent in me.state.agents) {
 			me.state.agents[agent].tick();
 		}
 	}
 	
 	// Add an agent to the agent list.
-	me.createAgent = function(config) {
+	me.createAgent = function(config) 
+	{
 	 	me.state.agents.push(new Agent(config));
 	}
 	
+	// Initialize!
 	me.init();
 }
