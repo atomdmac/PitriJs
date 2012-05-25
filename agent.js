@@ -18,7 +18,9 @@ function Agent(config) {
 	
 	// Run the next iteration of the simulation.
 	me.tick = function() {
-		// TODO
+		// TODO: How will the brain and the body share state information?
+		// me.state.brain.think();
+		// me.state.body.move();
 	}
 	
 	// Initialize.
@@ -70,17 +72,27 @@ function Wanderer(config) {
 	
 	// Do initialization here.
 	me.init = function() {
-		// TODO
+		// Acquire a random target.
+		me.state.target = me.getTarget();
 	}
 	
 	// Decides where to move to next based on the current target position and other environmental factors.
-	me.tick = function(steer) {
+	me.think = function() {
 		// TODO
 	}
 	
 	// Return a random target to move toward.
-	me.getTarget = function() {
-		// TODO
+	me.getNewTarget = function() {
+		var minx = 0;
+		var maxx = 400;
+		
+		var miny = 0;
+		var maxy = 400
+		
+		var x = Math.randInt(minx,maxx);
+		var y = Math.randInt(miny, maxy);
+		
+		return new Vector(x,y);
 	}
 	
 	// Initialize.
