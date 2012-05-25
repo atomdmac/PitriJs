@@ -1,12 +1,23 @@
-this.Agent = function(config) {
+function Agent(config) {
 	var defaults = {
 		name: "Agent" + Math.random(),
+		brain: new Wanderer(),
+		body: new PointMassModel()
 	}
 	
 	// Merge defaults with given config.
-	var state = $.extend({}, defaults, config);
+	this.state = $.extend({}, defaults, config);
 	
+	// Public Interface
+	this.tick = tick;
+	
+	// Do initialization here.
 	function init() {
+		// TODO
+	}
+	
+	// Run the next iteration of the simulation.
+	function tick() {
 		// TODO
 	}
 }
@@ -22,23 +33,42 @@ function PointMassModel(config) {
 	}
 	
 	// Merge defaults with given.
-	var state = $.extend({}, defaults, config);
+	this.state = $.extend({}, defaults, config);
 	
+	// Public Interface.
+	this.move = move;
+	
+	// Do initialization here.
 	function init() {
-		// Do initialization here.
+		// TODO
 	}
 	
-	function move(steer) {
-		// Modify the point mass's properties according to the given steering 
+	// Modify the point mass's properties according to the given steering 
 		// force.
+	function move(steer) {
+		// TODO
+	}
+	
+	// Returns a copy of the state object.
+	function getState() {
+		return $.extend({}, state);
 	}
 }
 
 function Wanderer(config) {
-	// Implement functionality for wanderer behavior.
+	// Defaults
+	var defaults = {
+		target: getTarget()
+	}
+	
+	// Merge defaults with config to form state.
+	this.state = $.extend({}, defaults, config);
+	
+	// Public Interface.
+	this.tick = tick;
 	
 	// Decides where to move to next based on the current target position and other environmental factors.
-	function think(steer) {
+	function tick(steer) {
 		// TODO
 	}
 	
