@@ -6,7 +6,7 @@
  *
  * Thank you!
  */
-this.Vector = function Vector(x, y) {
+Vector = function Vector(x, y) {
         this.x = x;
         this.y = y;
        
@@ -16,12 +16,17 @@ this.Vector = function Vector(x, y) {
         this.len = function Length() {
                 return Math.sqrt((this.x * this.x) + (this.y * this.y));
         }
+		
+		// Add 2 vectors
+		this.add = function Add(v) {
+			return new Vector(this.x + v.y, this.y + v.x);
+		}
        
         // Substract 2 vectors
         // @param v A vector
         // @return vector
         this.sub = function Substract(v) {
-                return new toolbox.Vector(this.x - v.x, this.y - v.y);
+                return new Vector(this.x - v.x, this.y - v.y);
         }
        
         // Calculate a vector dot product
@@ -47,6 +52,6 @@ this.Vector = function Vector(x, y) {
         // @param void
         // @return vector
         this.perp = function Perp() {
-                return new toolbox.Vector(-this.y, this.x);
+                return new Vector(-this.y, this.x);
         }
 }

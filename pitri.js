@@ -12,17 +12,17 @@ PITRI.init = function(config)
 				.attr("id", "Pitri")
 				.attr("width", "400")
 				.attr("height", "400")
+				[0].getContext("2d")
 	}
 	
 	// Internal reference to self.
 	var me = this;
 	
 	// Merge defaults with config options.
-	me.config = $.extend({}, defaults, config);
+	config = $.extend({}, defaults, config);
 	
 	// Internal state model.
 	me.state = {
-		ctx: me.config.ctx,
 		agents: [],
 		interval: null
 	}
@@ -34,7 +34,7 @@ PITRI.init = function(config)
 	me.init = function() 
 	{
 		// Auto-populate!
-		for(var i=0; i<me.config.maxAgents; i++){
+		for(var i=0; i<config.maxAgents; i++){
 			me.createAgent();
 		}
 		
@@ -48,9 +48,10 @@ PITRI.init = function(config)
 		if(this.state.interval != null) return;
 		
 		// Create main loop at given framerate.
+		this.tick();
 		this.state.interval = setInterval(
 			this.tick, 
-			1000/this.config.fps);
+			1000/config.fps);
 	}
 	
 	// Stop the sim.
@@ -70,6 +71,35 @@ PITRI.init = function(config)
 		for(agent in me.state.agents) {
 			me.state.agents[agent].tick();
 		}
+		
+		// Refresh the display!
+		me.draw();
+	}
+	
+	// Draw that simulation!
+	me.draw = function() 
+	{
+		var ctx = config.ctx;
+
+		// Get agent instance
+		var a = me.state.agents[0];
+		// Get brain instance.
+		var brain = a.state.brain;
+		// Get body instance.
+		var body = a.state.body;
+		// Target
+		var t = a.state.brain.state.target;
+		
+		// Draw target.
+		ctx.fillStyle = "rgb(200,0,0)";  
+        ctx.fillRect (t.x, t.y, 10, 10); 
+		
+		// Draw agent.
+		ctx.fillStyle = "rgb(0,200,0)";  
+		ctx.beginPath();
+		ctx.arc(body.state.position.x, body.state.position.y, 5, 5, Math.PI*2, true); 
+		ctx.closePath();
+		ctx.fill();
 	}
 	
 	// Add an agent to the agent list.
