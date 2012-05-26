@@ -1,9 +1,9 @@
-function Agent(config) 
+PITRI.Agent = function(config) 
 {
 	var defaults = {
 		name: "Agent" + Math.random(),
-		brain: new Wanderer(),
-		body: new PointMassModel()
+		brain: new PITRI.Wanderer(),
+		body: new PITRI.PointMassModel()
 	}
 	
 	// Internal reference to self.
@@ -30,7 +30,7 @@ function Agent(config)
 	me.init();
 }
 
-function PointMassModel(config) 
+PITRI.PointMassModel = function(config) 
 {
 	var defaults = {
 		maxSpeed: 10,
@@ -64,7 +64,7 @@ function PointMassModel(config)
 	me.init();
 }
 
-function Wanderer(config) 
+PITRI.Wanderer = function(config) 
 {
 	// Defaults
 	var defaults = {
@@ -81,7 +81,7 @@ function Wanderer(config)
 	me.init = function() 
 	{
 		// Acquire a random target.
-		me.state.target = me.getTarget();
+		me.state.target = me.getNewTarget();
 	}
 	
 	// Decides where to move to next based on the current target position and other environmental factors.

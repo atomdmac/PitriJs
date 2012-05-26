@@ -2,7 +2,8 @@
  * Pitri Life Sim
  * Main Script
  */
-function Pitri(config) 
+ var PITRI = {};
+PITRI.init = function(config) 
 {
 	var defaults = {
 		maxAgents: 1,
@@ -62,6 +63,10 @@ function Pitri(config)
 	// Run next iteration of the simulation.
 	me.tick = function() 
 	{
+		// DEBUG
+		console.log("TICK");
+		
+		// Loop through all agents and tick 'em!
 		for(agent in me.state.agents) {
 			me.state.agents[agent].tick();
 		}
@@ -70,7 +75,7 @@ function Pitri(config)
 	// Add an agent to the agent list.
 	me.createAgent = function(config) 
 	{
-	 	me.state.agents.push(new Agent(config));
+	 	me.state.agents.push(new PITRI.Agent(config));
 	}
 	
 	// Initialize!
