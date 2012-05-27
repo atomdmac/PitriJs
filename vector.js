@@ -13,8 +13,16 @@ Vector = function Vector(x, y) {
         // Calculate the length of a the vector
         // @param void
         // @return vector
-        this.len = function Length() {
-                return Math.sqrt((this.x * this.x) + (this.y * this.y));
+        this.len = function Length(newLen) {
+			if(!isNaN(newLen)) {
+				var length = this.len();
+                var xnorm = this.x / length;
+                var ynorm = this.y / length;
+				this.x = xnorm * newLen;
+				this.y = ynorm * newLen;
+				
+			}
+			return Math.sqrt((this.x * this.x) + (this.y * this.y));
         }
 		
 		// Add 2 vectors
