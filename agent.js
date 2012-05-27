@@ -93,8 +93,8 @@ PITRI.Wanderer = function(config)
 	me.think = function() 
 	{
 		var pos = config.agent.state.body.state.position;
-		var steer = pos.sub(me.state.target);
-		return steer;
+		config.agent.state.steer = pos.sub(me.state.target);
+		config.agent.state.steer.normalize();
 	}
 	
 	// Return a random target to move toward.

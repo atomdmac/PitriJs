@@ -42,7 +42,7 @@ Vector = function Vector(x, y) {
         // @param void
         // @return vector
         this.normalize = function Normalize() {
-                var length = this.Length();
+                var length = this.len();
                 this.x = this.x / length;
                 this.y = this.y / length;
         }
