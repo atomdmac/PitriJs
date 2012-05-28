@@ -25,6 +25,13 @@ Vector = function Vector(x, y) {
 			return Math.sqrt((this.x * this.x) + (this.y * this.y));
         }
 		
+		// Truncate vector.
+		this.trunc = function Truncate(maxLen) {
+			if (this.len() > maxLen) {
+				this.len(maxLen);
+			}
+		}
+		
 		// Add 2 vectors
 		this.add = function Add(v) {
 			return new Vector(this.x + v.y, this.y + v.x);
