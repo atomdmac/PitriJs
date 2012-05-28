@@ -50,6 +50,11 @@ Vector = function Vector(x, y) {
         this.dot = function DotProduct(v) {
                 return (this.x * v.x + this.y * v.y);
         }
+		
+		// Multiply 2 vectors
+		this.mult = function Multiply(n) {
+			return new Vector(this.x*n, this.y*n)
+		}
        
         // Normalize the vector
         // http://www.fundza.com/vectors/normalize/index.html

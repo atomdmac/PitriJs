@@ -36,11 +36,12 @@ PITRI.PointMassModel = function(config)
 	var defaults = {
 		maxSpeed: 5,
 		maxAccel: 5,
+		maxForce: 10,
 		position: new Vector(0,0),
 		velocity: new Vector(0,0),
 		accel: new Vector(0,0),
 		inertia: new Vector(0,0),
-		mass: 1
+		mass: 10
 	}
 	
 	// Internal reference to self.
@@ -56,23 +57,15 @@ PITRI.PointMassModel = function(config)
 	}
 	
 	// Modify the point mass's properties according to the given steering 
-		// force.
+	// force.
 	me.move = function() 
 	{
 		var steer = config.agent.state.brain.state.steer;
 		
-		// Calculate overall force.
-		/*
-		me.state.inertia.x = (me.state.mass * me.state.velocity.x);
-		me.state.inertia.y = (me.state.mass * me.state.velocity.y);
-		me.state.inertia.normalize();
-		steer.add(me.state.inertia);
-		*/
-		
 		// Calculate acceleration and truncate to maxAccel.
-		me.state.accel.x = (steer.x / me.state.mass, steer.x / me.state.mass);
-		me.state.accel.y = (steer.y / me.state.mass, steer.y / me.state.mass);
-		me.state.accel.trunc(me.state.maxAccel);
+		me.state.accel.x = (steer.x / me.state.mass);
+		me.state.accel.y = (steer.y / me.state.mass);
+		// me.state.accel.trunc(me.state.maxAccel);
 		
 		// Calculate and truncate speed.
 		me.state.velocity = me.state.velocity.add(me.state.accel);
@@ -91,7 +84,7 @@ PITRI.Wanderer = function(config)
 	// Defaults
 	var defaults = {
 		steer: new Vector(0,0),
-		targetDist: 40,
+		targetDist: 10,
 		maxDist: 80
 	}
 	
@@ -111,7 +104,6 @@ PITRI.Wanderer = function(config)
 	// Decides where to move to next based on the current target position and other environmental factors.
 	me.think = function() 
 	{
-		// Local refs.
 		var body = config.agent.state.body;
 		
 		// Do I need to choose a new target yet?
@@ -121,9 +113,17 @@ PITRI.Wanderer = function(config)
 			me.state.target = me.getNewTarget();
 		}
 	
-		var pos = config.agent.state.body.state.position;
-		me.state.steer = me.state.target.sub(pos);
-		me.state.steer.normalize();
+		var position = config.agent.state.body.state.position;
+		var target = me.state.target;
+		
+		var desired = position.sub(target);
+		desired = desired.mult(body.state.maxSpeed);
+		
+		me.state.steer = body.state.velocity.sub(desired);
+		me.state.steer.trunc(body.state.maxForce);
+		// me.state.steer = desiredVelocity.sub(body.state.velocity);
+		// me.state.steer.normalize();
+		console.log(me.state.steer);
 	}
 	
 	// Return a random target to move toward.
@@ -135,6 +135,7 @@ PITRI.Wanderer = function(config)
 		 * really stoned and I just wanted to see what it looks like.  I'll fix
 		 * this later, I swear.
 		 */
+		 /*
 		var distance = 80;
 		try{
 			var body = config.agent.state.body;
@@ -162,6 +163,9 @@ PITRI.Wanderer = function(config)
 		
 		var x = Math.randInt(minx, maxx);
 		var y = Math.randInt(miny, maxy);
+		*/
+		var x = Math.randInt(0, 400);
+		var y = Math.randInt(0, 400);
 		
 		return new Vector(x,y);
 	}
