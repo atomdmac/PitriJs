@@ -80,29 +80,43 @@ PITRI.init = function(config)
 	me.draw = function() 
 	{
 		var ctx = config.ctx;
-
-		// Get agent instance
-		var a = me.state.agents[0];
-		// Get brain instance.
-		var brain = a.state.brain;
-		// Get body instance.
-		var body = a.state.body;
-		// Target
-		var t = a.state.brain.state.target;
-		
 		// Clear the screen.
 		ctx.clearRect(0,0,400,400);
 		
-		// Draw target.
-		ctx.fillStyle = "rgb(200,0,0)";  
-        ctx.fillRect (t.x, t.y, 10, 10); 
-		
-		// Draw agent.
-		ctx.fillStyle = "rgb(0,200,0)";  
-		ctx.beginPath();
-		ctx.arc(body.state.position.x, body.state.position.y, 5, 5, Math.PI*2, true); 
-		ctx.closePath();
-		ctx.fill();
+		for(var i=0; i<me.state.agents.length; i++) {
+			// Get agent instance
+			var a = me.state.agents[i];
+			// Get brain instance.
+			var brain = a.state.brain;
+			// Get body instance.
+			var body = a.state.body;
+			// Target
+			var t = a.state.brain.state.target;
+			
+			// Agent position.
+			var pos = {
+				x: body.state.position.x,
+				y: body.state.position.y
+			}
+			
+			// Draw target.
+			ctx.fillStyle = "rgb(200,0,0)";  
+			ctx.fillRect (t.x, t.y, 10, 10); 
+			
+			// Draw agent.
+			ctx.fillStyle = "rgb(0,200,0)";  
+			ctx.beginPath();
+			ctx.arc(pos.x, pos.y, 5, 5, Math.PI*2, true); 
+			ctx.closePath();
+			ctx.fill();
+			
+			// Draw agent approach distance.
+			ctx.strokeStyle = "rgb(0,200,200)";
+			ctx.beginPath();
+			ctx.arc(pos.x, pos.y, brain.state.targetDist, brain.state.targetDist, Math.PI*2, true);
+			ctx.closePath();
+			ctx.stroke();
+		}
 	}
 	
 	// Add an agent to the agent list.
