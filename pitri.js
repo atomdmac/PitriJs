@@ -90,6 +90,9 @@ PITRI.init = function(config)
 		// Target
 		var t = a.state.brain.state.target;
 		
+		// Clear the screen.
+		ctx.clearRect(0,0,400,400);
+		
 		// Draw target.
 		ctx.fillStyle = "rgb(200,0,0)";  
         ctx.fillRect (t.x, t.y, 10, 10); 

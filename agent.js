@@ -33,12 +33,12 @@ PITRI.Agent = function(config)
 PITRI.PointMassModel = function(config) 
 {
 	var defaults = {
-		maxSpeed: 10,
-		maxForce: 1,
-		steer: new Vector(0,0),
+		maxSpeed: 5,
+		maxAccel: 1,
 		position: new Vector(0,0),
 		velocity: new Vector(0,0),
 		accel: new Vector(0,0),
+		inertia: new Vector(0,0),
 		mass: 1
 	}
 	
@@ -58,11 +58,37 @@ PITRI.PointMassModel = function(config)
 		// force.
 	me.move = function() 
 	{
-		var steer = config.agent.state.body.state.steer;
+		var steer = config.agent.state.brain.state.steer;
+		
+		// Calculate overall force.
+		me.state.inertia.x = (me.state.mass * me.state.velocity.x);
+		me.state.inertia.y = (me.state.mass * me.state.velocity.y);
+		me.state.inertia.normalize();
+		steer.add(me.state.inertia);
+		
+		// Calculate acceleration and truncate to maxAccel.
 		me.state.accel.x = (steer.x / me.state.mass, steer.x / me.state.mass);
 		me.state.accel.y = (steer.y / me.state.mass, steer.y / me.state.mass);
-		me.state.velocity.add(me.state.accel);
-		me.state.position.add(me.state.velocity);
+		me.state.accel.trunc(me.state.maxAccel);
+		
+		// Calculate and truncate speed.
+		me.state.velocity = me.state.velocity.add(me.state.accel);
+		me.state.velocity.trunc(me.state.maxSpeed);
+		
+		// Move me!
+		me.state.position = me.state.position.add(me.state.velocity);
+		
+		// DEBUG CODE.
+		/*
+		console.log("Steer: ");
+		console.log(steer);
+		console.log("Accel: ");
+		console.log(me.state.accel);
+		console.log("Velocity: ");
+		console.log(me.state.velocity);
+		console.log("Position: ");
+		console.log(me.state.position);
+		*/
 	}
 	
 	// Initialize.
@@ -73,7 +99,7 @@ PITRI.Wanderer = function(config)
 {
 	// Defaults
 	var defaults = {
-		// Blank for now!
+		steer: new Vector(0,0)
 	}
 	
 	// Internal reference to self.
@@ -92,9 +118,19 @@ PITRI.Wanderer = function(config)
 	// Decides where to move to next based on the current target position and other environmental factors.
 	me.think = function() 
 	{
+		// Local refs.
+		var body = config.agent.state.body;
+		
+		// Do I need to choose a new target yet?
+		var distance = me.state.target.sub(body.state.position);
+		distance = distance.len();
+		if(distance < 20) {
+			me.state.target = me.getNewTarget();
+		}
+	
 		var pos = config.agent.state.body.state.position;
-		config.agent.state.steer = pos.sub(me.state.target);
-		config.agent.state.steer.normalize();
+		me.state.steer = me.state.target.sub(pos);
+		me.state.steer.normalize();
 	}
 	
 	// Return a random target to move toward.
