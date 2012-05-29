@@ -3,10 +3,13 @@
 <head>
 	<title>Pitri Life Sim</title>
 	<!-- Styles -->
-	<link ref="stylesheet" href="pitri.css" />
+	<!-- <link ref="stylesheet" href="pitri.css" /> -->
+	<!-- <link ref="stylesheet" href="jquery-ui/css/ui-lightness/jquery-ui-1.8.20.custom" /> -->
+	<link href='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css' rel='stylesheet' type='text/css'>
 	
 	<!-- Scripts -->
 	<script src="jquery.js"></script>
+	<script src="jquery-ui/js/jquery-ui-1.8.20.custom.min.js"></script>
 	<script src="math.js"></script>
 	<script src="vector.js"></script>
 	<script src="pitri.js"></script>
@@ -29,6 +32,55 @@
 					PITRI.start();
 				}
 			});
+			
+			$( "#maxSpeed_slider" ).slider({
+				orientation: "vertical",
+				range: "min",
+				min: 0,
+				max: 25,
+				value: 5,
+				slide: function( event, ui ) {
+					$( "#maxSpeed_display" ).html( ui.value );
+					
+					// Update state.
+					for(agent in P.state.agents) {
+						P.state.agents[agent].state.body.state.maxSpeed = ui.value;
+					}
+				}
+			});
+			
+			$("#maxForce_slider").slider({
+				orientation:"vertical",
+				range: "min",
+				min: 0,
+				max: 25,
+				value: 5,
+				slide: function(e, ui) {
+					$("#maxForce_display").html(ui.value);
+					
+					// Update state.
+					for(agent in P.state.agents) {
+						P.state.agents[agent].state.body.state.maxForce = ui.value;
+					}
+				}
+			});
+			
+			$("#mass_slider").slider({
+				orientation:"vertical",
+				range: "min",
+				min: 0,
+				max: 25,
+				value: 5,
+				slide: function(e, ui) {
+					$("#mass_display").html(ui.value);
+					
+					// Update state.
+					for(agent in P.state.agents) {
+						P.state.agents[agent].state.body.state.mass = ui.value;
+					}
+				}
+			});
+			
 		});
 	</script>
 </head>
@@ -37,6 +89,15 @@
 
 	<div id="controls">
 		<button id="toggle_btn">Stop</button>
+		
+		<div id="maxSpeed_display"></div>
+		<div id="maxSpeed_slider"></div>
+		
+		<div id="maxForce_display"></div>
+		<div id="maxForce_slider"></div>
+		
+		<div id="mass_display"></div>
+		<div id="mass_slider"></div>
 	</div>
 
 </body>

@@ -35,7 +35,6 @@ PITRI.PointMassModel = function(config)
 {
 	var defaults = {
 		maxSpeed: 5,
-		maxAccel: 5,
 		maxForce: 10,
 		position: new Vector(0,0),
 		velocity: new Vector(0,0),
@@ -65,7 +64,6 @@ PITRI.PointMassModel = function(config)
 		// Calculate acceleration and truncate to maxAccel.
 		me.state.accel.x = (steer.x / me.state.mass);
 		me.state.accel.y = (steer.y / me.state.mass);
-		// me.state.accel.trunc(me.state.maxAccel);
 		
 		// Calculate and truncate speed.
 		me.state.velocity = me.state.velocity.add(me.state.accel);
@@ -121,14 +119,11 @@ PITRI.Wanderer = function(config)
 		
 		me.state.steer = body.state.velocity.sub(desired);
 		me.state.steer.trunc(body.state.maxForce);
-		// me.state.steer = desiredVelocity.sub(body.state.velocity);
-		// me.state.steer.normalize();
-		console.log(me.state.steer);
 	}
 	
 	// Return a random target to move toward.
 	me.getNewTarget = function() 
-	{	
+	{	 
 		/*
 		 * OK... This is an incredibly bad implementation for limiting the
 		 * distance that the generated target will be from the Agent but I'm
