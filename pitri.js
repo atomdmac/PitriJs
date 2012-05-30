@@ -6,13 +6,12 @@
 PITRI.init = function(config) 
 {
 	var defaults = {
+		// Maximum number of agents in the sim.
 		maxAgents: 1,
+		// Frames per second.
 		fps: 30,
-		ctx: $("<canvas></canvas>").appendTo($("locomotor"))
-				.attr("id", "Pitri")
-				.attr("width", "400")
-				.attr("height", "400")
-				[0].getContext("2d")
+		// Drawing context.
+		ctx: null
 	}
 	
 	// Internal reference to self.
@@ -33,6 +32,15 @@ PITRI.init = function(config)
 	// Do initialization here.
 	me.init = function() 
 	{
+		// Auto-create a convas 
+		if(config.ctx == undefined || config.ctx == null) {
+			config.ctx = $("<canvas></canvas>").appendTo($("locomotor"))
+					.attr("id", "Pitri")
+					.attr("width", "400")
+					.attr("height", "400")
+					[0].getContext("2d")		
+		}
+				
 		// Auto-populate!
 		for(var i=0; i<config.maxAgents; i++){
 			me.createAgent();

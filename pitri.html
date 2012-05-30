@@ -3,9 +3,8 @@
 <head>
 	<title>Pitri Life Sim</title>
 	<!-- Styles -->
-	<!-- <link ref="stylesheet" href="pitri.css" /> -->
-	<!-- <link ref="stylesheet" href="jquery-ui/css/ui-lightness/jquery-ui-1.8.20.custom" /> -->
-	<link href='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" type="text/css" href="pitri.css" />
+	<link rel="stylesheet" type="text/css" href="jquery-ui/css/ui-lightness/jquery-ui-1.8.20.custom" />
 	
 	<!-- Scripts -->
 	<script src="jquery.js"></script>
@@ -19,7 +18,9 @@
 		$().ready(function(){
 		
 			// Initialize sim.
-			P = PITRI.init({fps: 30});
+			var ctx = $("#world_display")[0].getContext("2d");
+			console.log(ctx);
+			var P = PITRI.init({fps: 30, "ctx": ctx});
 			
 			// UI.
 			$("#toggle_btn").click(function(e){
@@ -98,6 +99,10 @@
 		
 		<div id="mass_display"></div>
 		<div id="mass_slider"></div>
+	</div>
+	
+	<div id="display">
+		<canvas id="world_display" width="400" height="400"></canvas>
 	</div>
 
 </locomotor>
