@@ -100,8 +100,16 @@ PITRI.init = function(config)
 			}
 			
 			// Draw target.
-			ctx.fillStyle = "rgb(200,0,0)";  
-			ctx.fillRect (t.x, t.y, 10, 10); 
+			ctx.strokeStyle="rgb(255,0,0)";
+			ctx.beginPath();
+			ctx.moveTo(t.x-5, t.y);
+			ctx.lineTo(t.x+5, t.y);
+			ctx.stroke();
+			
+			ctx.beginPath();
+			ctx.moveTo(t.x, t.y-5);
+			ctx.lineTo(t.x, t.y+5);
+			ctx.stroke();
 			
 			// Draw agent.
 			ctx.fillStyle = "rgb(0,200,0)";  

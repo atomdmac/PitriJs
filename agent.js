@@ -2,8 +2,8 @@ PITRI.Agent = function(config)
 {
 	var defaults = {
 		name: "Agent" + Math.random(),
-		brain: new PITRI.Wanderer({agent:this}),
-		locomotor: new PITRI.PointMassModel({agent:this}),
+		navigator: new PITRI.WanderNav({agent:this}),
+		locomotor: new PITRI.PointMassLoco({agent:this}),
 		skin: new PITRI.GenericAgentSkin()
 	}
 	
@@ -22,8 +22,8 @@ PITRI.Agent = function(config)
 	// Run the next iteration of the simulation.
 	me.tick = function() 
 	{
-		// TODO: How will the brain and the locomotor share state information?
-		me.state.brain.think();
+		// TODO: How will the navigator and the locomotor share state information?
+		me.state.navigator.think();
 		me.state.locomotor.move();
 	}
 	
@@ -31,7 +31,7 @@ PITRI.Agent = function(config)
 	me.init();
 }
 
-PITRI.PointMassModel = function(config) 
+PITRI.PointMassLoco = function(config) 
 {
 	var defaults = {
 		maxSpeed: 5,
@@ -59,7 +59,7 @@ PITRI.PointMassModel = function(config)
 	// force.
 	me.move = function() 
 	{
-		var steer = config.agent.state.brain.state.steer;
+		var steer = config.agent.state.navigator.state.steer;
 		
 		// Calculate acceleration and truncate to maxAccel.
 		me.state.accel.x = (steer.x / me.state.mass);
@@ -77,7 +77,7 @@ PITRI.PointMassModel = function(config)
 	me.init();
 }
 
-PITRI.Wanderer = function(config) 
+PITRI.WanderNav = function(config) 
 {
 	// Defaults
 	var defaults = {
