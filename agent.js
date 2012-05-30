@@ -2,7 +2,7 @@ PITRI.Agent = function(config)
 {
 	var defaults = {
 		name: "Agent" + Math.random(),
-		navigator: new PITRI.WanderNav({agent:this}),
+		navigator: new PITRI.RandomNav({agent:this}),
 		locomotor: new PITRI.PointMassLoco({agent:this}),
 		skin: new PITRI.GenericAgentSkin()
 	}
@@ -77,7 +77,7 @@ PITRI.PointMassLoco = function(config)
 	me.init();
 }
 
-PITRI.WanderNav = function(config) 
+PITRI.RandomNav = function(config) 
 {
 	// Defaults
 	var defaults = {
