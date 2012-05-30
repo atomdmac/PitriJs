@@ -86,12 +86,12 @@ PITRI.init = function(config)
 		for(var i=0; i<me.state.agents.length; i++) {
 			// Get agent instance
 			var a = me.state.agents[i];
-			// Get brain instance.
-			var brain = a.state.brain;
+			// Get navigator instance.
+			var navigator = a.state.navigator;
 			// Get locomotor instance.
 			var locomotor = a.state.locomotor;
 			// Target
-			var t = a.state.brain.state.target;
+			var t = a.state.navigator.state.target;
 			
 			// Agent position.
 			var pos = {
@@ -113,7 +113,7 @@ PITRI.init = function(config)
 			// Draw agent approach distance.
 			ctx.strokeStyle = "rgb(0,200,200)";
 			ctx.beginPath();
-			ctx.arc(pos.x, pos.y, brain.state.targetDist, brain.state.targetDist, Math.PI*2, true);
+			ctx.arc(pos.x, pos.y, navigator.state.targetDist, navigator.state.targetDist, Math.PI*2, true);
 			ctx.closePath();
 			ctx.stroke();
 		}
