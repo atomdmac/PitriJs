@@ -6,9 +6,13 @@ A life simulator.
 Synopsis
 ========
 
-Pitri contains Agents that wander around inside of a virtual world and interact with each other in various ways.
-The short term goal of the project is to implement basic wandering behavior for agents that allows them to move 
-randomly around the screen. Eventually, collision avoidance and goal setting will be added.
+Pitri contains Agents that wander around inside of a virtual "pitri dish" and interact with each other in various ways.
+
+Currently Implemented
+=====================
+- Wandering behavior (based on concepts described by Craig Reynolds' "Steering Behaviors for Autonomous Characters"
+- Basic rendering engine (using Canvas)
+- Unlimited number of agents
 
 Long Term Goals
 ===============
