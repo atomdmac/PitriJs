@@ -8,7 +8,7 @@ PITRI.init = function(config)
 	var defaults = {
 		maxAgents: 1,
 		fps: 30,
-		ctx: $("<canvas></canvas>").appendTo($("body"))
+		ctx: $("<canvas></canvas>").appendTo($("locomotor"))
 				.attr("id", "Pitri")
 				.attr("width", "400")
 				.attr("height", "400")
@@ -88,15 +88,15 @@ PITRI.init = function(config)
 			var a = me.state.agents[i];
 			// Get brain instance.
 			var brain = a.state.brain;
-			// Get body instance.
-			var body = a.state.body;
+			// Get locomotor instance.
+			var locomotor = a.state.locomotor;
 			// Target
 			var t = a.state.brain.state.target;
 			
 			// Agent position.
 			var pos = {
-				x: body.state.position.x,
-				y: body.state.position.y
+				x: locomotor.state.position.x,
+				y: locomotor.state.position.y
 			}
 			
 			// Draw target.

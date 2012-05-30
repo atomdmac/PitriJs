@@ -44,7 +44,7 @@
 					
 					// Update state.
 					for(agent in P.state.agents) {
-						P.state.agents[agent].state.body.state.maxSpeed = ui.value;
+						P.state.agents[agent].state.locomotor.state.maxSpeed = ui.value;
 					}
 				}
 			});
@@ -60,7 +60,7 @@
 					
 					// Update state.
 					for(agent in P.state.agents) {
-						P.state.agents[agent].state.body.state.maxForce = ui.value;
+						P.state.agents[agent].state.locomotor.state.maxForce = ui.value;
 					}
 				}
 			});
@@ -76,7 +76,7 @@
 					
 					// Update state.
 					for(agent in P.state.agents) {
-						P.state.agents[agent].state.body.state.mass = ui.value;
+						P.state.agents[agent].state.locomotor.state.mass = ui.value;
 					}
 				}
 			});
@@ -85,7 +85,7 @@
 	</script>
 </head>
 
-<body>
+<locomotor>
 
 	<div id="controls">
 		<button id="toggle_btn">Stop</button>
@@ -100,5 +100,5 @@
 		<div id="mass_slider"></div>
 	</div>
 
-</body>
+</locomotor>
 </html>

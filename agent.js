@@ -3,7 +3,7 @@ PITRI.Agent = function(config)
 	var defaults = {
 		name: "Agent" + Math.random(),
 		brain: new PITRI.Wanderer({agent:this}),
-		body: new PITRI.PointMassModel({agent:this}),
+		locomotor: new PITRI.PointMassModel({agent:this}),
 		skin: new PITRI.GenericAgentSkin()
 	}
 	
@@ -22,9 +22,9 @@ PITRI.Agent = function(config)
 	// Run the next iteration of the simulation.
 	me.tick = function() 
 	{
-		// TODO: How will the brain and the body share state information?
+		// TODO: How will the brain and the locomotor share state information?
 		me.state.brain.think();
-		me.state.body.move();
+		me.state.locomotor.move();
 	}
 	
 	// Initialize.
@@ -102,23 +102,23 @@ PITRI.Wanderer = function(config)
 	// Decides where to move to next based on the current target position and other environmental factors.
 	me.think = function() 
 	{
-		var body = config.agent.state.body;
+		var locomotor = config.agent.state.locomotor;
 		
 		// Do I need to choose a new target yet?
-		var distance = me.state.target.sub(body.state.position);
+		var distance = me.state.target.sub(locomotor.state.position);
 		distance = distance.len();
 		if(distance < me.state.targetDist) {
 			me.state.target = me.getNewTarget();
 		}
 	
-		var position = config.agent.state.body.state.position;
+		var position = config.agent.state.locomotor.state.position;
 		var target = me.state.target;
 		
 		var desired = position.sub(target);
-		desired = desired.mult(body.state.maxSpeed);
+		desired = desired.mult(locomotor.state.maxSpeed);
 		
-		me.state.steer = body.state.velocity.sub(desired);
-		me.state.steer.trunc(body.state.maxForce);
+		me.state.steer = locomotor.state.velocity.sub(desired);
+		me.state.steer.trunc(locomotor.state.maxForce);
 	}
 	
 	// Return a random target to move toward.
@@ -133,7 +133,7 @@ PITRI.Wanderer = function(config)
 		 /*
 		var distance = 80;
 		try{
-			var body = config.agent.state.body;
+			var locomotor = config.agent.state.locomotor;
 		} catch(err){
 			minx = 0;
 			maxx = 400;
@@ -145,13 +145,13 @@ PITRI.Wanderer = function(config)
 			return new Vector(x,y);
 		}
 		
-		minx = body.state.position.x - distance;
-		maxx = body.state.position.x + distance;
+		minx = locomotor.state.position.x - distance;
+		maxx = locomotor.state.position.x + distance;
 		if(minx < 0) minx = 0;
 		if(maxx > 400) maxx = 400;
 		
-		miny = body.state.position.y - distance;
-		maxy = body.state.position.y + distance;
+		miny = locomotor.state.position.y - distance;
+		maxy = locomotor.state.position.y + distance;
 		if(miny < 0) miny = 0;
 		if(maxy > 400) maxy = 400;
 		// End amazingly hack-ish code.
