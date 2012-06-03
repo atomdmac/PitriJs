@@ -82,7 +82,7 @@ PITRI.RandomNav = function(config)
 	// Defaults
 	var defaults = {
 		steer: new Vector(0,0),
-		targetDist: 10,
+		targetDist: 40,
 		maxDist: 80
 	}
 	
