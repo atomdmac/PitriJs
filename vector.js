@@ -7,6 +7,7 @@
  * Thank you!
  */
 Vector = function Vector(x, y) {
+console.log("Vector is accepting (" + x + ", " + y + ")");
 	this.x = x;
 	this.y = y;
    

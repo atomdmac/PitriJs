@@ -1,22 +1,36 @@
-PITRI.Agent = function(config) 
+PITRI.Agent = function(_config) 
 {
-	var defaults = {
-		name: "Agent" + Math.random(),
-		navigator: new PITRI.RandomNav({agent:this}),
-		locomotor: new PITRI.PointMassLoco({agent:this}),
-		skin: new PITRI.GenericAgentSkin()
-	}
-	
 	// Internal reference to self.
 	var me = this;
 	
-	// Merge defaults with given config.
-	me.state = $.extend({}, defaults, config);
+	var defaultConfig = {
+		name: "Agent" + Math.random(),
+		navigator:  PITRI.RandomNav,
+		locomotor:  PITRI.PointMassLoco,
+		skin:  PITRI.GenericAgentSkin
+	}
+	
+	var defaultState = {
+		navigator: null,
+		locomotor: null,
+		skin: null,
+	}
+	
+	// Merge default config with given config.
+	me.config = $.extend(true, {}, defaultConfig, _config);
+	
+	// Merge default state with given state.
+	me.state = $.extend(true, {}, defaultState);
 	
 	// Do initialization here.
 	me.init = function() 
 	{
-		// TODO
+		// Initialize state.
+		me.state = {
+			navigator: new me.config.navigator({agent:this}),
+			locomotor: new me.config.locomotor({agent:this}),
+			skin: new me.config.skin({agent:this})
+		}
 	}
 	
 	// Run the next iteration of the simulation.
@@ -31,35 +45,65 @@ PITRI.Agent = function(config)
 	me.init();
 }
 
-PITRI.PointMassLoco = function(config) 
+PITRI.PointMassLoco = function(_config) 
 {
-	var defaults = {
-		maxSpeed: 5,
-		maxForce: 10,
-		position: new Vector(0,0),
-		velocity: new Vector(0,0),
-		accel: new Vector(0,0),
-		inertia: new Vector(0,0),
-		mass: 10
-	}
-	
 	// Internal reference to self.
 	var me = this;
 	
-	// Merge defaults with given.
-	me.state = $.extend({}, defaults, config);
+	// If not specified in _config, use these defaults.
+	var defaultConfig = {
+		// Reference to the parent agent.  (Should be set when instantiated).
+		agent: null,
+		// Max speed that the point mass can move at.
+		maxSpeed: 5,
+		// Max force that the point mass can impose on itself.
+		maxForce: 10,
+		// Contains initialization information.
+		init: {
+			position: {x:0, y:0},
+			velocity: {x:0, y:0},
+			accel: {x:0, y:0},
+			mass: 10
+		}
+	}
+	
+	// Copy these properties to me.state before initialization.
+	var defaultState = {
+		position: null,
+		velocity: null,
+		accel: null,
+		inertia: null,
+		mass: null
+	}
+	
+	// Merge default config with given config.
+	me.config = $.extend({}, defaultConfig, _config);
+	
+	// Merge default state with given state.
+	me.state = $.extend({}, defaultState);
 	
 	// Do initialization here.
 	me.init = function() 
 	{
-		// TODO
+		console.log(me.config.init.position.x);
+		
+		// Initialize state.
+		me.state.position = new Vector(me.config.init.position.x,
+									   me.config.init.position.y)
+		me.state.velocity = new Vector(me.config.init.velocity.x,
+									   me.config.init.velocity.y)
+		me.state.accel = new Vector(me.config.init.accel.x,
+									me.config.init.accel.y)
+		me.state.mass = me.config.init.mass;
+		
+		console.log(me.state);
 	}
 	
 	// Modify the point mass's properties according to the given steering 
 	// force.
 	me.move = function() 
 	{
-		var steer = config.agent.state.navigator.state.steer;
+		var steer = me.config.agent.state.navigator.state.steer;
 		
 		// Calculate acceleration and truncate to maxAccel.
 		me.state.accel.x = (steer.x / me.state.mass);
@@ -77,32 +121,56 @@ PITRI.PointMassLoco = function(config)
 	me.init();
 }
 
-PITRI.RandomNav = function(config) 
+PITRI.RandomNav = function(_config) 
 {
+	// Internal reference to self.
+	var me = this;
+	
 	// Defaults
-	var defaults = {
+	var defaultConfig = {
 		steer: new Vector(0,0),
 		targetDist: 40,
 		maxDist: 80
 	}
 	
-	// Internal reference to self.
-	var me = this;
+	// If not specified in _config, use these defaults.
+	var defaultConfig = {
+		// Reference to the parent agent.  (Should be set when instantiated).
+		agent: null,
+		// Distance from agent that is considered "arrival".
+		targetDistance: 5,
+		// Max distance from the agent that the target can be.
+		maxDistance: 10,
+		// Contains initialization information.
+		init: {
+			target: {x:0, y:0}
+		}
+	}
 	
-	// Merge defaults with config to form state.
-	me.state = $.extend({}, defaults, config);
+	// Copy these properties to me.state before initialization.
+	var defaultState = {
+		steer: null,
+		target: null
+	}
+	
+	// Merge default config with given config.
+	me.config = $.extend({}, defaultConfig, _config);
+	
+	// Merge default state with given state.
+	me.state = $.extend({}, defaultState);
 	
 	// Do initialization here.
 	me.init = function() 
 	{
 		// Acquire a random target.
 		me.state.target = me.getNewTarget();
+		me.state.steer = new Vector(0,0);
 	}
 	
 	// Decides where to move to next based on the current target position and other environmental factors.
 	me.think = function() 
 	{
-		var locomotor = config.agent.state.locomotor;
+		var locomotor = me.config.agent.state.locomotor;
 		
 		// Do I need to choose a new target yet?
 		var distance = me.state.target.sub(locomotor.state.position);
@@ -111,7 +179,7 @@ PITRI.RandomNav = function(config)
 			me.state.target = me.getNewTarget();
 		}
 	
-		var position = config.agent.state.locomotor.state.position;
+		var position = me.config.agent.state.locomotor.state.position;
 		var target = me.state.target;
 		
 		var desired = position.sub(target);
@@ -169,7 +237,10 @@ PITRI.RandomNav = function(config)
 	me.init();
 }
 
-PITRI.GenericAgentSkin = function(config) {
+PITRI.GenericAgentSkin = function(_config) {
+	// Internal reference to self.
+	var me = this;
+	
 	// Defaults
 	var defaults = {
 		color: "rgb(0, 255, 0)",
